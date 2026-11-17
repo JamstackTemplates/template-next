@@ -1,0 +1,76 @@
+name: Build and deploy to GitHub Pages
+# Jamstacks dispatches this workflow with a provisioning_id and finds the run by this exact title.
+run-name: ${{ inputs.provisioning_id && format('Jamstacks {0}', inputs.provisioning_id) || 'Build and deploy to GitHub Pages' }}
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      provisioning_id:
+        description: Jamstacks provisioning operation correlation ID
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Test configuration and content
+        run: npm test
+      - name: Check TypeScript
+        run: npm run typecheck
+      - name: Read GitHub Pages configuration
+        id: pages
+        if: github.event_name != 'pull_request'
+        uses: actions/configure-pages@v5
+      - name: Build static website
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
+          PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          PAGES_BASE_URL: ${{ steps.pages.outputs.base_url }}
+          NEXT_PUBLIC_SITE_DOMAIN: ${{ vars.SITE_DOMAIN }}
+          JAMSTACKS_SITE: ${{ vars.JAMSTACKS_SITE }}
+          NEXT_PUBLIC_JAMSTACKS_CDN_URL: ${{ vars.JAMSTACKS_CDN_URL }}
+      - name: Upload static website
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: out
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v5

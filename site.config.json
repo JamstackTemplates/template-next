@@ -1,0 +1,9 @@
+{
+  "name": "Jamstacks starter",
+  "description": "A neutral Next.js foundation for Jamstacks websites.",
+  "domain": "",
+  "jamstacks": {
+    "siteId": "",
+    "cdnUrl": "https://cdn.jamstacks.net"
+  }
+}
