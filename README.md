@@ -11,7 +11,10 @@ Start in the checkout of the repository GitHub created from `JamstackTemplates/t
 starter files are already present. Local development requires Node 24 or later and npm.
 
 To build a new site, fill in `plan/PLAN.md`, then tell the coding agent **`Implement plan/PLAN.md`**.
-After reviewing the finished site, delete `plan/` to remove all initial build instructions.
+In Claude Code, `/write-plan <business description>` drafts the brief for you. For a gallery template,
+pass the table row: `/write-plan next-type-style | Business | Description | Form purpose`.
+After reviewing the finished site, run `/cleanup-plan` or delete `plan/` and `.claude/skills/` by hand
+to remove all initial build instructions.
 
 To preview locally, run `npm ci` and `npm run dev` from the repository root.
 
@@ -154,5 +157,5 @@ node --test jamstacks/config.test.mjs
 Before publication: replace neutral content and shell; validate industry data/schema and all links;
 choose licensed fonts; verify both themes/base-path/embed states; create a neutral 1200×630 public/og.png
 from the finished design and wire metadata; replace the icon; generate gallery captures and validate;
-confirm domain/Pages settings and HTTPS; remove `plan/` after review. The website must not import or
+confirm domain/Pages settings and HTTPS; remove `plan/` and `.claude/skills/` after review. The website must not import or
 link the planning folder. No stock screenshot or OG image is supplied as if it were final.

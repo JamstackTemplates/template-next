@@ -12,6 +12,8 @@ repository at runtime. See README.md for local preview and publishing steps.
 When asked to `Implement plan/PLAN.md`, read the brief there and the shared build requirements in
 `plan/PROMPT_TEMPLATE.md`, then implement the site in the current checkout. The `plan/` folder is
 for initial creation and can be deleted after review. Keep it out of website code and public assets.
+The `.claude/skills/` folder holds `write-plan` (drafts `plan/PLAN.md`) and `cleanup-plan` (removes
+`plan/` and `.claude/skills/` after review). Like `plan/`, it is for initial creation only.
 
 ## Structure and content
 
@@ -69,4 +71,4 @@ The entire jamstacks/ folder is source-gallery-only and removable. Customer code
 and Pages never import/read it. Keep site.config.json, the form and workflow outside it. Generate real
 light/dark captures after a fresh normal build and run node --test jamstacks/config.test.mjs separately.
 Each new template needs its own business-led layout/fonts/art and OG image; do not ship the neutral
-starter as a final design. Remove `plan/` before publishing a gallery template once reviewed.
+starter as a final design. Remove `plan/` and `.claude/skills/` before publishing a gallery template once reviewed.
