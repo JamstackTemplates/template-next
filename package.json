@@ -10,8 +10,8 @@
     "typecheck": "next typegen && tsc --noEmit",
     "test": "node --test --test-isolation=none tests/*.test.mjs tests/*.test.ts",
     "check": "npm test && npm run typecheck && npm run build",
-    "create:template": "node scripts/create.mjs",
-    "verify:export": "node scripts/verify-export.mjs"
+    "outdated": "vp outdated",
+    "upgrade": "npx npm-check-updates@latest -u --reject vite,vite-plus,@vitest/ui && npm install"
   },
   "engines": {
     "node": ">=24"

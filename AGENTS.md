@@ -5,12 +5,22 @@
 Work on the current branch, preserve existing changes and leave changes uncommitted unless asked.
 Do not push, change remote settings or deploy without instructions. Replace sample content with the
 owner's real details. This is a self-contained static website; it does not require the starter or portal
-repository at runtime. See README.md for generation and publishing steps.
+repository at runtime. See README.md for local preview and publishing steps.
+
+## Building a new website
+
+When asked to `Implement plan/PLAN.md`, read the brief there and the shared build requirements in
+`plan/PROMPT_TEMPLATE.md`, then implement the site in the current checkout. The `plan/` folder is
+for initial creation and can be deleted after review. Keep it out of website code and public assets.
 
 ## Structure and content
 
-`content/business.ts` owns name, introduction, contact and enquiry text. Add typed industry collections
-under content/; most owner requests should be data edits. Document fields and validate IDs, required
+`content/business.ts` holds the starter's shared business details and sample copy. When building a
+site, write page-specific copy directly in the route's `app/**/page.tsx` as JSX children of named React
+components. Put headings, calls to action, labels and captions in page order. Backing components
+own the semantic markup, Tailwind styles, accessibility and behavior. Keep typed data in `content/`
+for values the site reads programmatically, including contact details and structured collections.
+Document fields and validate IDs, required
 fields, prices, availability and references with item-specific failures. Rename in content and
 site.config.json. Keep the provisioner's config shape: name, description, domain, optional timeZone,
 jamstacks.siteId/cdnUrl and optional provisioningId. Business data never goes there. Reuse the design's
@@ -48,9 +58,9 @@ No credentials in config or browser output. Preserve Pages provisioning_id input
 
 ## Commands and checks
 
-Run npm run check after changes, then a project-path export and npm run verify:export with matching
-build environment. Check configured/unconfigured Contact, light/dark at desktop/mobile widths and
-keyboard links. Add meaningful tests for behavior, including frequent owner edits. Report local checks
+Run `npm run check` after changes. Check configured and unconfigured Contact and use a project-path
+export when changing the embed, base paths or canonical URLs. Check light/dark at desktop/mobile
+widths and keyboard links. Add meaningful tests for behavior, including frequent owner edits. Report local checks
 separately from deployments or message delivery. Update README when owner-facing behavior changes.
 
 ## Template publishing assets
@@ -59,6 +69,4 @@ The entire jamstacks/ folder is source-gallery-only and removable. Customer code
 and Pages never import/read it. Keep site.config.json, the form and workflow outside it. Generate real
 light/dark captures after a fresh normal build and run node --test jamstacks/config.test.mjs separately.
 Each new template needs its own business-led layout/fonts/art and OG image; do not ship the neutral
-starter as a final design. Keep planning documents out of the website and remove them before publication
-once reviewed. The starter's generator copies source only and refuses file collisions; reconcile an
-existing README deliberately instead of overwriting user work.
+starter as a final design. Remove `plan/` before publishing a gallery template once reviewed.
