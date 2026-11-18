@@ -86,12 +86,32 @@ nested lists or small tables for collections. Each section must cover the follow
   the business.
   - The primary colour must carry white button text in both modes.
   - Use only self-hosted or licensed fonts that can be installed via npm.
+  - Start from the subject itself: its materials, signage, packaging, tools, era and place. Turn
+    those into a concept with a name (e.g. "Machine shop and can art"), not a generic adjective
+    like "modern and clean".
+- Artwork: list each bespoke SVG piece by name and describe it. At minimum include a hero scene,
+  two or three section motifs or dividers, small icons, the 404 art and the OG image. Describe
+  the shared drawing style (line weight, flat or textured fills, halftone, paper grain, and so
+  on). Every piece must be drawable as inline SVG, with no photography or stock assets.
+- Page compositions: for every page, give each section in order with its layout and the artwork
+  it uses, and say how its content is presented as a designed object rather than a card grid
+  (for example "beers as a row of can labels on a steel shelf"). Vary the layouts between
+  sections. Describe what the first screen looks like at 390px and at 1440px.
 - Interactions (filters, an open-now status, a map, tabs): what each does, and how it reads
   without JavaScript. Static copy stays neutral, and time-based status is computed in the
   browser.
   - Hours must not cross midnight unless the brief explicitly requires overnight support,
     tested, to be built.
-- Acceptance criteria: checks specific to this brief, beyond the shared ones. For example:
+- Acceptance criteria: start with **visual criteria** that can be checked in screenshots, so the
+  design is held to the same standard as the data. Give at least five. For example:
+  - the first screen at 390px shows the hero art, the wordmark and the primary action
+  - the signature element appears on Home and on its main page
+  - no two consecutive sections on Home share a layout
+  - the header, footer, page heads, Contact and the 404 all use the themed art and type
+  - dark mode keeps the textures and art with the same character
+  - nothing on the page could pass for the neutral starter
+
+  Then add checks specific to this brief, beyond the shared ones. For example:
   - validate collection data (unique IDs, price and range limits, references between items)
   - test hours boundaries and DST
   - required legal or responsible-service wording (age limits for alcohol, allergen notes)

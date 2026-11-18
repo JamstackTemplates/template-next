@@ -21,6 +21,52 @@ uncommitted unless asked. Pages settings, DNS changes and deployment require sep
   form behavior and Pages provisioning contract. Limit client components to browser interactions.
   Keep the site self-contained so it can build without the portal or starter checkout.
 
+## Make the design the main deliverable
+
+A site that passes every check but looks like a restyled starter is **not finished**. Visitors judge
+the business by how the site looks within seconds, so treat the visual design with at least the same
+care as the data, tests and form integration. The brief's visual direction is a specification, not a
+mood board. Build every element it names.
+
+1. **Art-direct before you code.** Turn the brief's visual direction into a plan for each page,
+   section by section. Note each section's composition, the artwork it uses, how its content is
+   presented, and how it differs from the sections next to it. Keep these notes in your working
+   context, not in the repository. If a frontend-design skill or similar design guidance is
+   available, load it now.
+2. **Build the visual system first.** Before writing any page:
+   - Install and wire up the fonts.
+   - Create the palette tokens for both themes.
+   - Build the textures, rules and borders.
+   - Make the bespoke SVG artwork as reusable components: the hero illustration, section motifs,
+     dividers, icons and the signature element. Artwork should be substantial, layered and drawn
+     for this business. A single icon or a coloured box does not count.
+
+   Pages then compose from these pieces.
+3. **Let the content shape the design.** Present the core collections as designed objects that
+   fit the subject: for example a tap list as a row of can labels or tap handles, a menu as a
+   printed menu card, a portfolio as a contact sheet. Avoid generic cards. Write the copy for this
+   business with specific, confident detail, and leave no starter phrasing behind.
+4. **Aim high.**
+   - **Hero:** the first screen is a composed scene. Use large display type, artwork that fills
+     the space, and the primary action. A centred heading over a plain background does not
+     count.
+   - **Varied sections:** vary layouts, scale and rhythm from section to section, with full-bleed
+     bands, overlapping art, asymmetric grids and oversized numerals or type. Don't repeat one
+     card grid.
+   - **Every surface themed:** the header, footer, page heads, Contact, the 404 and the print view
+     all carry the brand.
+   - **Dark mode:** design it as its own mood with the same character, not an inverted palette.
+   - **Motion:** use small, purposeful motion such as reveals, hover states and the signature
+     element's interaction, disabled under reduced motion.
+5. **Avoid the generic look**:
+   - the starter's layout or spacing left in place
+   - system or default fonts
+   - three identical feature cards
+   - emoji or stock icons standing in for art
+   - placeholder rectangles and decorative gradients with no link to the subject
+   - flat, unbroken white or black backgrounds on every section
+   - a design you could swap onto any other business by changing the words
+
 ## Separate editable copy from presentation
 
 - Put page-specific prose and labels directly in the page's `app/**/page.tsx` file, in the order
@@ -83,7 +129,7 @@ uncommitted unless asked. Pages settings, DNS changes and deployment require sep
 
 ## Design and site behavior
 
-- Give the site a layout, type scale and artwork that fit its audience. Use Tailwind v4 utilities in
+- Implement the art direction described above. Use Tailwind v4 utilities in
   components and map `app/tailwind.input.css` colour tokens for light, automatic dark and explicit
   dark modes. Keep the hosted form's button contrast, visible keyboard focus, semantic headings,
   skip link, reduced motion and print styles. Check small screens from 360px up.
@@ -113,9 +159,21 @@ builds, tests and Pages must work without the gallery folder.
 
 1. Run `npm run check`. When a change affects the Contact integration, base paths or canonical URLs,
    use a project-path build to check configured and unconfigured Contact, links and metadata.
-2. Review each page in both themes at desktop and mobile widths. Exercise keyboard navigation,
-   Contact navigation in both directions, and any new interactions. Test the common owner edit
-   from the README against the rendered page.
-3. Report the local checks and any remaining verification separately from deployment or actual
+2. **Review the design visually and refine it.** Serve the build (`npm start`) and capture every
+   page in light and dark at about 1440px and 390px wide.
+   - **How to capture:** use a browser-automation tool, Playwright or headless Chromium, whichever
+     is available.
+   - **Where to save:** put the screenshots in a temporary folder, not the repository.
+   - **Look at them yourself.** Check them against the brief's visual direction and visual
+     acceptance criteria, item by item, and against the "avoid the generic look" list above.
+     Ask whether it could be a different business's site.
+   - **Fix and recapture.** Fix every gap, then capture again. Do at least one full refinement
+     pass even if the first result seems acceptable.
+   - **If you can't capture:** say so in the hand-off, and list the visual checks still to be
+     done by hand.
+3. Exercise keyboard navigation, Contact navigation in both directions, and any new interactions.
+   Test the common owner edit from the README against the rendered page.
+4. In the hand-off, include a short design summary: how each item in the brief's visual direction
+   was realised and where. Report the local checks and any remaining verification separately from deployment or actual
    enquiry delivery. Leave `plan/` in place for the owner's review. Keep it out of website code and
    public assets so the owner can delete it after the site is complete.

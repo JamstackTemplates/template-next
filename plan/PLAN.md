@@ -24,6 +24,8 @@ do not apply. Record business-specific requirements here so the shared prompt ca
 
 ## Design and behavior
 
-- Visual direction — [Layout, typography, palette in both themes, imagery and a distinctive element tied to the business.]
+- Visual direction — [Mood and concept, layout, typography, palette in both themes, textures and a distinctive element tied to the business.]
+- Artwork — [The bespoke illustrations to draw (hero scene, section motifs, dividers, icons, 404 and OG art) and the style they share.]
+- Page compositions — [For each page, how every section looks: its layout, the art it uses and how its content is presented. Sections should vary from one to the next.]
 - Interactions — [Any filters, map, opening-hours display or other behavior, including how it should work without JavaScript.]
-- Acceptance criteria — [Any brief-specific scenarios and content rules to verify, in addition to the shared checks.]
+- Acceptance criteria — [Visual criteria that can be checked in screenshots, plus brief-specific scenarios and content rules, in addition to the shared checks.]
