@@ -133,9 +133,9 @@ add public/CNAME; the custom domain is a repository setting. The workflow sets i
 when a `PAGES_ADMIN_TOKEN` secret is available (a fine-grained token with Administration and Pages
 write access to the repository, e.g. as an organisation secret). The domain is the `SITE_DOMAIN`
 variable, else site.config.json's `domain`, else `<repo-name>.jamstacks.net` for JamstackTemplates
-repositories. Without the secret the step only prints a notice; set the custom domain in Settings → Pages.
+repositories. Once the domain is set and its certificate is issued, a later deploy also enforces HTTPS.
+Without the secret the step only prints a notice; set the custom domain and HTTPS in Settings → Pages.
 DNS is managed separately; for template demos the CNAME targets `jamstacktemplates.github.io`.
-Enable HTTPS after the certificate is ready.
 
 ## Content Security Policy
 

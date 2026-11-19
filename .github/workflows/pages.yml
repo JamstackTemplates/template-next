@@ -61,12 +61,22 @@ jobs:
             echo "::notice::PAGES_ADMIN_TOKEN is not set; set the Pages custom domain to $domain in repository settings."
             exit 0
           fi
-          current="$(gh api "repos/$REPO/pages" --jq '.cname // ""' || true)"
-          if [ "$current" = "$domain" ]; then echo "Pages custom domain is already $domain."; exit 0; fi
-          if gh api -X PUT "repos/$REPO/pages" -f cname="$domain" > /dev/null; then
-            echo "Set Pages custom domain to $domain."
-          else
-            echo "::warning::Could not set the Pages custom domain to $domain; check PAGES_ADMIN_TOKEN permissions."
+          pages="$(gh api "repos/$REPO/pages" || echo '{}')"
+          if [ "$(jq -r '.cname // ""' <<< "$pages")" != "$domain" ]; then
+            if gh api -X PUT "repos/$REPO/pages" -f cname="$domain" > /dev/null; then
+              echo "Set Pages custom domain to $domain. HTTPS is enforced on a later deploy once its certificate is issued."
+            else
+              echo "::warning::Could not set the Pages custom domain to $domain; check PAGES_ADMIN_TOKEN permissions."
+            fi
+            exit 0
+          fi
+          echo "Pages custom domain is already $domain."
+          if [ "$(jq -r '.https_enforced' <<< "$pages")" != "true" ]; then
+            if gh api -X PUT "repos/$REPO/pages" -F https_enforced=true > /dev/null 2>&1; then
+              echo "Enforced HTTPS for $domain."
+            else
+              echo "::notice::The HTTPS certificate for $domain is not ready yet; HTTPS will be enforced on a later deploy."
+            fi
           fi
       - name: Read GitHub Pages configuration
         id: pages

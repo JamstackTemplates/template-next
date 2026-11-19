@@ -144,4 +144,5 @@ test('the workflow sets the Pages custom domain before reading the Pages configu
   assert.ok(setDomain > 0 && setDomain < workflow.indexOf('- name: Read GitHub Pages configuration'));
   assert.match(workflow, /domain="\$REPO_NAME\.jamstacks\.net"/);
   assert.match(workflow, /gh api -X PUT "repos\/\$REPO\/pages" -f cname="\$domain"/);
+  assert.match(workflow, /gh api -X PUT "repos\/\$REPO\/pages" -F https_enforced=true/);
 });
