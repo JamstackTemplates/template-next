@@ -131,5 +131,17 @@ test('the workflow keeps the provisioning dispatch contract', () => {
   assert.match(workflow, /NEXT_PUBLIC_SITE_DOMAIN: \$\{\{ vars\.SITE_DOMAIN \}\}/);
   assert.match(workflow, /PAGES_BASE_PATH: \$\{\{ steps\.pages\.outputs\.base_path \}\}/);
   assert.match(workflow, /if: github\.event_name != 'pull_request'\s*\n\s*needs: build/);
-  assert.doesNotMatch(workflow, /secrets\./);
+  // The only secret is the optional admin token used to set the Pages custom domain, and it is never
+  // passed to the build step.
+  assert.deepEqual([...workflow.matchAll(/secrets\.(\w+)/g)].map((match) => match[1]), ['PAGES_ADMIN_TOKEN']);
+  const build = workflow.slice(workflow.indexOf('- name: Build static website'), workflow.indexOf('- name: Upload static website'));
+  assert.doesNotMatch(build, /secrets\.|GH_TOKEN/);
+});
+
+test('the workflow sets the Pages custom domain before reading the Pages configuration', () => {
+  const workflow = readFileSync(new URL('../.github/workflows/pages.yml', import.meta.url), 'utf8');
+  const setDomain = workflow.indexOf('- name: Set GitHub Pages custom domain');
+  assert.ok(setDomain > 0 && setDomain < workflow.indexOf('- name: Read GitHub Pages configuration'));
+  assert.match(workflow, /domain="\$REPO_NAME\.jamstacks\.net"/);
+  assert.match(workflow, /gh api -X PUT "repos\/\$REPO\/pages" -f cname="\$domain"/);
 });

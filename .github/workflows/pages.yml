@@ -41,6 +41,33 @@ jobs:
         run: npm test
       - name: Check TypeScript
         run: npm run typecheck
+      # GitHub ignores CNAME files for Actions deployments; the custom domain is a repository setting.
+      # Setting it needs Administration write, which GITHUB_TOKEN cannot have, so it uses an optional
+      # PAGES_ADMIN_TOKEN secret (fine-grained: Administration + Pages write). Runs before
+      # configure-pages so this build already gets the root base path and custom-domain URL.
+      - name: Set GitHub Pages custom domain
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ secrets.PAGES_ADMIN_TOKEN }}
+          REPO: ${{ github.repository }}
+          REPO_NAME: ${{ github.event.repository.name }}
+          OWNER: ${{ github.repository_owner }}
+          SITE_DOMAIN: ${{ vars.SITE_DOMAIN }}
+        run: |
+          domain="${SITE_DOMAIN:-$(node -p "require('./site.config.json').domain || ''")}"
+          if [ -z "$domain" ] && [ "$OWNER" = "JamstackTemplates" ]; then domain="$REPO_NAME.jamstacks.net"; fi
+          if [ -z "$domain" ]; then echo "No site domain configured; leaving Pages domain unchanged."; exit 0; fi
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::notice::PAGES_ADMIN_TOKEN is not set; set the Pages custom domain to $domain in repository settings."
+            exit 0
+          fi
+          current="$(gh api "repos/$REPO/pages" --jq '.cname // ""' || true)"
+          if [ "$current" = "$domain" ]; then echo "Pages custom domain is already $domain."; exit 0; fi
+          if gh api -X PUT "repos/$REPO/pages" -f cname="$domain" > /dev/null; then
+            echo "Set Pages custom domain to $domain."
+          else
+            echo "::warning::Could not set the Pages custom domain to $domain; check PAGES_ADMIN_TOKEN permissions."
+          fi
       - name: Read GitHub Pages configuration
         id: pages
         if: github.event_name != 'pull_request'

@@ -128,9 +128,14 @@ navigation and any added browser interactions. Return to a normal build before c
 `.github/workflows/pages.yml` uses npm ci, tests, typecheck and static export. It preserves Jamstacks'
 `provisioning_id` dispatch input
 and correlated run name. It builds pull requests without deploying, and publishes main/manual runs.
-Configure Pages to use GitHub Actions and set its custom domain to the same value as site.config.json.
+Configure Pages to use GitHub Actions. GitHub ignores a CNAME file for Actions deployments, so do not
+add public/CNAME; the custom domain is a repository setting. The workflow sets it before building
+when a `PAGES_ADMIN_TOKEN` secret is available (a fine-grained token with Administration and Pages
+write access to the repository, e.g. as an organisation secret). The domain is the `SITE_DOMAIN`
+variable, else site.config.json's `domain`, else `<repo-name>.jamstacks.net` for JamstackTemplates
+repositories. Without the secret the step only prints a notice; set the custom domain in Settings → Pages.
 DNS is managed separately; for template demos the CNAME targets `jamstacktemplates.github.io`.
-Do not add public/CNAME. Enable HTTPS after the certificate is ready. This starter performs no remote setup.
+Enable HTTPS after the certificate is ready.
 
 ## Content Security Policy
 
